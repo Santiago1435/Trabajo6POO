@@ -145,7 +145,7 @@ public class Interfaz extends JFrame implements ActionListener {
         if (e.getSource() == crear) {
             String nombre = nombreAmigoCF.getText();
             String numero = numeroAmigoCF.getText();
-            setTitle("CRUD-ADD");
+            setTitle("AGREGAR AMIGO");
             try {
                 if (serializador.agregarAmigo(nombre, numero)) {
                     JOptionPane.showMessageDialog(this, nombre + " ha sido creado con exito!", "Creacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
@@ -178,10 +178,10 @@ public class Interfaz extends JFrame implements ActionListener {
             numeroAmigoR.setVisible(false);
             mostrar.setVisible(false);
 
-            setTitle("CRUD-ADD");
+            setTitle("AGREGAR AMIGO");
 
         } else if (e.getSource() == readItem) {
-            setTitle("CRUD-READ");
+            setTitle("LEER AMIGOS");
             nombreAmigoC.setVisible(false);
             nombreAmigoCF.setVisible(false);
             numeroAmigoC.setVisible(false);
@@ -210,9 +210,9 @@ public class Interfaz extends JFrame implements ActionListener {
             String telefono = serializador.obtenerTelefono(nombre);
             nombreAmigoR.setText("Nombre: " + nombre);
             numeroAmigoR.setText("Numero: " + telefono);
-            setTitle("CRUD-READ");
+            setTitle("LEER AMIGOS");
         } else if (e.getSource() == updateItem) {
-            setTitle("CRUD-UPDATE");
+            setTitle("ACTUALIZAR AMIGO");
             myList.setVisible(true);
             scrollPane.setVisible(true);
             update1.setVisible(true);
@@ -236,7 +236,7 @@ public class Interfaz extends JFrame implements ActionListener {
 
         } else if (e.getSource() == update1) {
             nombre_temporal = myList.getSelectedValue();
-            setTitle("CRUD-UPDATE-" + nombre_temporal);
+            setTitle("ACTUALIZAR AMIGO-" + nombre_temporal);
             nombreAmigoC.setVisible(true);
             nombreAmigoCF.setVisible(true);
             numeroAmigoC.setVisible(true);
@@ -287,14 +287,14 @@ public class Interfaz extends JFrame implements ActionListener {
             numeroAmigoCF.setVisible(false);
             update.setVisible(false);
             crear.setVisible(false);
-            setTitle("CRUD-UPDATE");
+            setTitle("ACTUALIZAR AMIGO");
             try {
                 cargarInfo();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         } else if (e.getSource() == deleteItem) {
-            setTitle("CRUD-DELETE");
+            setTitle("ELIMINAER AMIGO");
 
             myList.setVisible(true);
             scrollPane.setVisible(true);
