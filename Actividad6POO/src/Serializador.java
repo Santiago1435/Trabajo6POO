@@ -224,4 +224,23 @@ public class Serializador {
         }
         return false;
     }
+
+    public String obtenerTelefono(String nombre) {
+        try {
+            File archivo = new File("src/friendContact.txt");
+            RandomAccessFile accesoArchivo = new RandomAccessFile(archivo, "r");
+            String linea;
+            while ((linea = accesoArchivo.readLine()) != null) {
+                String[] datos = linea.split("!");
+                if (datos.length >= 2 && datos[0].equalsIgnoreCase(nombre)) {
+                    accesoArchivo.close();
+                    return datos[1];
+                }
+            }
+            accesoArchivo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
