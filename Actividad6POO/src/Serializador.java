@@ -63,7 +63,6 @@ public class Serializador {
 
         // Si no existe el amigo, cerramos el acceso y retornamos falso
         if (!existeRegistro(nombre, "", accesoArchivo)) {
-            accesoArchivo.close();
             return false;
         }
 
@@ -74,6 +73,8 @@ public class Serializador {
 
         // Creamos un acceso al archivo temporal en modo escritura y lectura
         RandomAccessFile accesoTemporal = new RandomAccessFile(archivoTemporal, "rw");
+
+        accesoArchivo.seek(0);
 
         // Iteramos sobre el archivo principal
         while (accesoArchivo.getFilePointer() < accesoArchivo.length()) {
@@ -87,24 +88,23 @@ public class Serializador {
             }
 
             // Escribimos la línea en el archivo temporal con un carácter de nueva línea
-            accesoTemporal.writeBytes(linea + System.lineSeparator());
+            accesoTemporal.writeBytes(linea+System.lineSeparator());
         }
 
-        // Cerramos ambos archivos
+        accesoArchivo.seek(0);
+        accesoTemporal.seek(0);
+
+        while ((linea = accesoTemporal.readLine()) != null) {
+            accesoArchivo.writeBytes(linea);
+            accesoArchivo.writeBytes(System.lineSeparator());
+        }
+
+        accesoArchivo.setLength(accesoTemporal.length());
+
         accesoArchivo.close();
         accesoTemporal.close();
 
-        // Eliminamos el archivo original
-        if (!archivo.delete()) {
-            // Manejamos el caso donde no se pudo eliminar el archivo original
-            return false;
-        }
-
-        // Renombramos el archivo temporal al nombre del archivo original
-        if (!archivoTemporal.renameTo(archivo)) {
-            // Manejamos el caso donde no se pudo renombrar el archivo temporal
-            return false;
-        }
+        archivoTemporal.delete();
 
         return true;
     }
@@ -122,6 +122,7 @@ public class Serializador {
         crearArchivo(archivo);
         RandomAccessFile accesoArchivo  = new RandomAccessFile(archivo, "r");
 
+        accesoArchivo.seek(0);
         // Iteramos sobre el archivo principal
         while (accesoArchivo.getFilePointer() < accesoArchivo.length()) {
             linea = accesoArchivo.readLine();
@@ -155,6 +156,7 @@ public class Serializador {
 
         RandomAccessFile accesoTemporal = new RandomAccessFile(archivoTemporal, "rw");
 
+        accesoArchivo.seek(0);
         // Iteramos sobre el archivo principal
         while (accesoArchivo.getFilePointer() < accesoArchivo.length()) {
             linea = accesoArchivo.readLine();
@@ -213,6 +215,7 @@ public class Serializador {
     private boolean existeRegistro(String nombre, String numero, RandomAccessFile accesoArchivo) throws IOException {
         String linea;
 
+        accesoArchivo.seek(0);
         while (accesoArchivo.getFilePointer() < accesoArchivo.length()) {
             linea = accesoArchivo.readLine();
 
@@ -230,9 +233,11 @@ public class Serializador {
             File archivo = new File("src/friendContact.txt");
             RandomAccessFile accesoArchivo = new RandomAccessFile(archivo, "r");
             String linea;
-            while ((linea = accesoArchivo.readLine()) != null) {
+            accesoArchivo.seek(0);
+            while (accesoArchivo.getFilePointer() < accesoArchivo.length()) {
+                linea = accesoArchivo.readLine();
                 String[] datos = linea.split("!");
-                if (datos.length >= 2 && datos[0].equalsIgnoreCase(nombre)) {
+                if (datos.length == 2 && datos[0].equalsIgnoreCase(nombre)) {
                     accesoArchivo.close();
                     return datos[1];
                 }

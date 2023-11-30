@@ -25,7 +25,7 @@ public class Interfaz extends JFrame implements ActionListener {
      * de inicio
      */
     public Interfaz() {
-        setTitle("CRUD-ADD");
+        setTitle("Agregar Amigo");
         setSize(450, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -294,7 +294,7 @@ public class Interfaz extends JFrame implements ActionListener {
                 throw new RuntimeException(ex);
             }
         } else if (e.getSource() == deleteItem) {
-            setTitle("ELIMINAER AMIGO");
+            setTitle("ELIMINAR AMIGO");
 
             myList.setVisible(true);
             scrollPane.setVisible(true);
@@ -326,6 +326,12 @@ public class Interfaz extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, nombre + " ha sido eliminado!", "Actualizacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
                     cargarInfo();
                 }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            try {
+                cargarInfo();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
